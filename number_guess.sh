@@ -1,5 +1,5 @@
 #!/bin/bash
-PSQL="psql -X --username=freecodecamp --dbname=guess_number --no-align --tuples-only -c"
+PSQL="psql -X --username=freecodecamp --dbname=number_guess --no-align --tuples-only -c"
 
 secret_number=$(( $RANDOM % 1000 + 1 ))
 COUNT=0
@@ -14,12 +14,14 @@ MAIN_MENU(){
 VERIFY_USERNAME(){
   wordcount=${#username} 
   # if [[ $wordcount -lt 1 || $wordcount -gt 22 ]]
-  if [[ $wordcount -lt 1 ]]
+  # if [[  $wordcount -lt 1  &&  $username =~ [a-z]  ]];
+  if [[ ! $username =~ ^[A-Za-Z0-9|_|\-]+$  ||  $wordcount -lt 1 ]];
   then
     # NO INPUT OR >= 23 character. Re-enter username
     # echo $wordcount
     MAIN_MENU
   else
+    # pass verification.
     # echo $wordcount
     USER_ID_QUERY_RESULT="$($PSQL "SELECT user_id FROM users WHERE username='$username';")" 
     # check if NEW user
